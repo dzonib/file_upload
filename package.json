@@ -1,0 +1,31 @@
+{
+  "name": "file_upload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dzonib/file_upload.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dzonib/file_upload/issues"
+  },
+  "homepage": "https://github.com/dzonib/file_upload#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-fileupload": "^1.1.4"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.11"
+  }
+}
