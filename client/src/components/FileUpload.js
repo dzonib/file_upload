@@ -16,22 +16,26 @@ export default function FileUpload() {
     const onSubmitHandler = async e => {
         e.preventDefault()
         const formData = new FormData()
-        console.log(formData)
+        console.log('form data ', formData)
 
         formData.append("file", file)
-        console.log(formData)
+        console.log('appended form data ', formData)
 
         try {
             const {
-                data: { fileName, filePath }
+                data
             } = await axios.post("/upload", formData, {
-                "Content-Type": "multipart/form-data"
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
             })
+
+            const { fileName, filePath } = data
 
             setUploadedFile({ fileName, filePath })
 
             console.log(uploadedFile.fileName, uploadedFile.filePath)
-            console.log('crap')
+
         } catch (err) {
             if (err.response.status === 500) {
                 console.log("There was a problem with the server")
