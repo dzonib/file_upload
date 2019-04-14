@@ -1,10 +1,13 @@
 import React, { useState } from "react"
 import axios from "axios"
 
+import Message from "../components/Message"
+
 export default function FileUpload() {
     const [file, setFile] = useState("")
     const [fileName, setFileName] = useState("Choose File")
     const [uploadedFile, setUploadedFile] = useState({})
+    const [message, setMessage] = useState("")
 
     const onChangeHandler = e => {
         console.log(e.target.files)
@@ -16,15 +19,11 @@ export default function FileUpload() {
     const onSubmitHandler = async e => {
         e.preventDefault()
         const formData = new FormData()
-        console.log('form data ', formData)
 
         formData.append("file", file)
-        console.log('appended form data ', formData)
 
         try {
-            const {
-                data
-            } = await axios.post("/upload", formData, {
+            const { data } = await axios.post("/upload", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -34,18 +33,18 @@ export default function FileUpload() {
 
             setUploadedFile({ fileName, filePath })
 
-            console.log(uploadedFile.fileName, uploadedFile.filePath)
-
+            setMessage("File uploaded")
         } catch (err) {
             if (err.response.status === 500) {
-                console.log("There was a problem with the server")
+                setMessage("There was a problem with the server")
             } else {
-                console.log(err.response.data.msg)
+                setMessage(err.response.data.msg)
             }
         }
     }
     return (
         <>
+            {message && <Message msg={message} />}
             <form onSubmit={onSubmitHandler}>
                 <div className="custom-file mb-4">
                     <input
@@ -64,6 +63,21 @@ export default function FileUpload() {
                     className="btn btn-primary btn-block mt-4"
                 />
             </form>
+            {uploadedFile ? (
+                <div className="row mt-5">
+                    <div className="col-md-6 m-auto">
+                        <h3 className="text-center">
+                            {" "}
+                            {uploadedFile.fileName}
+                        </h3>
+                        <img
+                            style={{ width: "100%" }}
+                            src={uploadedFile.filePath}
+                            alt=""
+                        />
+                    </div>
+                </div>
+            ) : null}
         </>
     )
 }
